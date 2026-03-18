@@ -23,7 +23,4 @@ MODIFY SAL DECIMAL(10,2);
 5. Drop Employee_master Table. 
 DROP TABLE Employee_master;
 
-
-
-
-5. Drop Employee_master Table. 
+ 
