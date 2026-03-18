@@ -1,1 +1,189 @@
+1. Display the list of employees who have joined the company before 30th June 80 or after 31st Dec 81. 
+MariaDB [2CSE25_1690]> SELECT *
+    -> FROM EMPLOYEE
+    -> WHERE HIREDATE < '1980-06-30'
+    -> OR HIREDATE > '1981-12-31';
++-------+--------+---------+------+------------+------+------+--------+
+| EMPNO | ENAME  | JOB     | MGR  | HIREDATE   | SAL  | COMM | DEPTNO |
++-------+--------+---------+------+------------+------+------+--------+
+|  7788 | SCOTT  | ANALYST | 7566 | 1982-12-09 | 3300 | NULL |     40 |
+|  7876 | ADAMS  | CLERK   | 7788 | 1983-01-12 | 1210 | NULL |     20 |
+|  7934 | MILLER | CLERK   | 7782 | 1982-01-23 | 1430 | NULL |     10 |
++-------+--------+---------+------+------------+------+------+--------+
+3 rows in set (0.001 sec)
 
+
+
+2. Display the names of employees whose names have second alphabet A in their names. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE ENAME LIKE '_A%';
++--------+
+| ENAME  |
++--------+
+| WARD   |
+| MARTIN |
+| JAMES  |
++--------+
+3 rows in set (0.000 sec)
+
+
+
+3. Display the names of employees whose name is exactly five characters in length 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE CHAR_LENGTH(ENAME) = 5;
++-------+
+| ENAME |
++-------+
+| SMITH |
+| ALLEN |
+| JONES |
+| BLAKE |
+| CLARK |
+| SCOTT |
+| ADAMS |
+| JAMES |
++-------+
+8 rows in set (0.000 sec)
+
+
+
+4. Display the names of employees whose names have second alphabet A in their names. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE ENAME LIKE '_A%';
++--------+
+| ENAME  |
++--------+
+| WARD   |
+| MARTIN |
+| JAMES  |
++--------+
+3 rows in set (0.000 sec)
+
+
+
+5. Display the names of employees who are not working as salesman or clerk or analyst. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE JOB NOT IN ('SALESMAN','CLERK','ANALYST');
++-------+
+| ENAME |
++-------+
+| JONES |
+| BLAKE |
+| CLARK |
+| KING  |
++-------+
+4 rows in set (0.000 sec)
+
+
+
+6. Display the name of the employee along with their annual salary (sal*12). The name of the employee earning highest salary should appear first. 
+MariaDB [2CSE25_1690]> SELECT ENAME, (SAL*12) AS ANNUAL_SALARY
+    -> FROM EMPLOYEE
+    -> ORDER BY SAL DESC;
++--------+---------------+
+| ENAME  | ANNUAL_SALARY |
++--------+---------------+
+| KING   |         66000 |
+| SCOTT  |         39600 |
+| FORD   |         39600 |
+| JONES  |         39276 |
+| BLAKE  |         37620 |
+| CLARK  |         32340 |
+| ALLEN  |         19200 |
+| TURNER |         18000 |
+| MILLER |         17160 |
+| MARTIN |         15000 |
+| WARD   |         15000 |
+| ADAMS  |         14520 |
+| JAMES  |         12540 |
+| SMITH  |         10560 |
++--------+---------------+
+14 rows in set (0.001 sec)
+
+
+
+7. Display name, sal, hra, pf, da, totalsal for each employee. The output should be in the order of total sal, hra 15% of sal, da 10% of sal, pf 5% of sal. Total salary will be (sal*hra*da)-pf. 
+MariaDB [2CSE25_1690]> SELECT ENAME,
+    -> SAL,
+    -> (SAL*0.15) AS HRA,
+    -> (SAL*0.10) AS DA,
+    -> (SAL*0.05) AS PF,
+    -> (SAL + (SAL*0.15) + (SAL*0.10) - (SAL*0.05)) AS TOTALSAL
+    -> FROM EMPLOYEE
+    -> ORDER BY TOTALSAL DESC;
++--------+------+--------+--------+--------+----------+
+| ENAME  | SAL  | HRA    | DA     | PF     | TOTALSAL |
++--------+------+--------+--------+--------+----------+
+| KING   | 5500 | 825.00 | 550.00 | 275.00 |  6600.00 |
+| SCOTT  | 3300 | 495.00 | 330.00 | 165.00 |  3960.00 |
+| FORD   | 3300 | 495.00 | 330.00 | 165.00 |  3960.00 |
+| JONES  | 3273 | 490.95 | 327.30 | 163.65 |  3927.60 |
+| BLAKE  | 3135 | 470.25 | 313.50 | 156.75 |  3762.00 |
+| CLARK  | 2695 | 404.25 | 269.50 | 134.75 |  3234.00 |
+| ALLEN  | 1600 | 240.00 | 160.00 |  80.00 |  1920.00 |
+| TURNER | 1500 | 225.00 | 150.00 |  75.00 |  1800.00 |
+| MILLER | 1430 | 214.50 | 143.00 |  71.50 |  1716.00 |
+| MARTIN | 1250 | 187.50 | 125.00 |  62.50 |  1500.00 |
+| WARD   | 1250 | 187.50 | 125.00 |  62.50 |  1500.00 |
+| ADAMS  | 1210 | 181.50 | 121.00 |  60.50 |  1452.00 |
+| JAMES  | 1045 | 156.75 | 104.50 |  52.25 |  1254.00 |
+| SMITH  |  880 | 132.00 |  88.00 |  44.00 |  1056.00 |
++--------+------+--------+--------+--------+----------+
+14 rows in set (0.001 sec)
+
+
+
+8. Update the salary of each employee by 10% increment who are not eligible for commission. 
+MariaDB [2CSE25_1690]> UPDATE EMPLOYEE
+    -> SET SAL = SAL + (SAL*0.10)
+    -> WHERE COMM IS NULL;
+Query OK, 10 rows affected (0.011 sec)
+Rows matched: 10  Changed: 10  Warnings: 0
+
+
+
+9. Display those employees whose salary is more than 3000 after giving 20% increment. 
+MariaDB [2CSE25_1690]> SELECT ENAME, (SAL*1.20) AS UPDATED_SAL
+    -> FROM EMPLOYEE
+    -> WHERE (SAL*1.20) > 3000;
++-------+-------------+
+| ENAME | UPDATED_SAL |
++-------+-------------+
+| JONES |     4320.00 |
+| BLAKE |     4138.80 |
+| CLARK |     3558.00 |
+| SCOTT |     4356.00 |
+| KING  |     7260.00 |
+| FORD  |     4356.00 |
++-------+-------------+
+6 rows in set (0.001 sec)
+
+
+
+10. Display those employees whose salary contains atleast 3 digits. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE SAL >= 100;
++--------+
+| ENAME  |
++--------+
+| SMITH  |
+| ALLEN  |
+| WARD   |
+| JONES  |
+| MARTIN |
+| BLAKE  |
+| CLARK  |
+| SCOTT  |
+| KING   |
+| TURNER |
+| ADAMS  |
+| JAMES  |
+| FORD   |
+| MILLER |
++--------+
+14 rows in set (0.001 sec)
