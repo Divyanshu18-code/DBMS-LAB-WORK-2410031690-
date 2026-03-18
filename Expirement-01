@@ -1,1 +1,29 @@
+Perform following Query 
+1. Create Employee_master table with data using Employee table.
+CREATE TABLE Employee_master AS 
+SELECT * FROM EMPLOYEE;
 
+
+2. Delete all record into Employee_master whose DeptNo is 10 
+CREATE TABLE Employee_master AS 
+SELECT * FROM EMPLOYEE;
+
+
+3. Update 10% in his salary of DEPTNO 20 into Employee_Master. 
+UPDATE Employee_master
+SET SAL = SAL + (SAL * 0.10)
+WHERE DEPTNO = 20;
+
+
+4. Alter SAL with size 10,2 in Employee_Master. 
+ALTER TABLE Employee_master
+MODIFY SAL DECIMAL(10,2);
+
+
+5. Drop Employee_master Table. 
+DROP TABLE Employee_master;
+
+
+
+
+5. Drop Employee_master Table. 
