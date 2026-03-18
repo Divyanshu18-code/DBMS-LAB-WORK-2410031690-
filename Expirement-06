@@ -1,1 +1,191 @@
+1. Display empno, ename, deptno from employee table. Instead of display department numbers display the related department name (Use decode function). 
+MariaDB [2CSE25_1690]> SELECT E.EMPNO, E.ENAME, D.DNAME
+    -> FROM EMPLOYEE E
+    -> JOIN DEPARTMENT D
+    -> ON E.DEPTNO = D.DEPTNO;
++-------+--------+------------+
+| EMPNO | ENAME  | DNAME      |
++-------+--------+------------+
+|  7934 | MILLER | RESEARCH   |
+|  7369 | SMITH  | ACCOUNTING |
+|  7566 | JONES  | ACCOUNTING |
+|  7782 | CLARK  | ACCOUNTING |
+|  7839 | KING   | ACCOUNTING |
+|  7876 | ADAMS  | ACCOUNTING |
+|  7902 | FORD   | ACCOUNTING |
+|  7499 | ALLEN  | SALES      |
+|  7521 | WARD   | SALES      |
+|  7654 | MARTIN | SALES      |
+|  7698 | BLAKE  | SALES      |
+|  7844 | TURNER | SALES      |
+|  7900 | JAMES  | SALES      |
+|  7788 | SCOTT  | OPERATIONS |
++-------+--------+------------+
+14 rows in set (0.001 sec)
+
+
+
+2. Display your age in days. 
+MariaDB [2CSE25_1690]> SELECT DATEDIFF(CURDATE(),'2005-01-01') AS AGE_IN_DAYS;
++-------------+
+| AGE_IN_DAYS |
++-------------+
+|        7746 |
++-------------+
+1 row in set (0.000 sec)
+
+
+
+3. Display your age in months. 1,2 
+MariaDB [2CSE25_1690]> SELECT TIMESTAMPDIFF(MONTH,'2005-01-01',CURDATE()) AS AGE_IN_MONTHS;
++---------------+
+| AGE_IN_MONTHS |
++---------------+
+|           254 |
++---------------+
+1 row in set (0.000 sec)
+
+
+
+4. Display the current date as 15th August Friday Nineteen Ninety-Seven. 
+MariaDB [2CSE25_1690]> SELECT DATE_FORMAT(NOW(),'%D %M %W %Y') AS FORMATTED_DATE;
++---------------------------+
+| FORMATTED_DATE            |
++---------------------------+
+| 18th March Wednesday 2026 |
++---------------------------+
+1 row in set (0.000 sec)
+
+
+
+5. Display the following output for each row from employee table. 
+6. Scott has joined the company on Wednesday 13th August Nineteen Ninety 
+MariaDB [2CSE25_1690]> SELECT CONCAT(ENAME,' has joined the company on ',
+    -> DATE_FORMAT(HIREDATE,'%W %D %M %Y')) AS MESSAGE
+    -> FROM EMPLOYEE;
++--------------------------------------------------------------+
+| MESSAGE                                                      |
++--------------------------------------------------------------+
+| SMITH has joined the company on Wednesday 17th December 1980 |
+| ALLEN has joined the company on Friday 20th February 1981    |
+| WARD has joined the company on Sunday 22nd February 1981     |
+| JONES has joined the company on Thursday 2nd April 1981      |
+| MARTIN has joined the company on Monday 28th September 1981  |
+| BLAKE has joined the company on Friday 1st May 1981          |
+| CLARK has joined the company on Tuesday 9th June 1981        |
+| SCOTT has joined the company on Thursday 9th December 1982   |
+| KING has joined the company on Tuesday 17th November 1981    |
+| TURNER has joined the company on Tuesday 8th September 1981  |
+| ADAMS has joined the company on Wednesday 12th January 1983  |
+| JAMES has joined the company on Thursday 3rd December 1981   |
+| FORD has joined the company on Thursday 3rd December 1981    |
+| MILLER has joined the company on Saturday 23rd January 1982  |
++--------------------------------------------------------------+
+14 rows in set (0.001 sec)
+
+
+
+7. Find the date for nearest Saturday after current date. 
+MariaDB [2CSE25_1690]> SELECT DATE_ADD(CURDATE(),
+    -> INTERVAL (7 - DAYOFWEEK(CURDATE())) DAY) AS NEXT_SATURDAY;
++---------------+
+| NEXT_SATURDAY |
++---------------+
+| 2026-03-21    |
++---------------+
+1 row in set (0.000 sec)
+
+
+
+8. Display current time. 
+MariaDB [2CSE25_1690]> SELECT CURRENT_TIME() AS CURRENTTIME;
++-------------+
+| CURRENTTIME |
++-------------+
+| 22:39:43    |
++-------------+
+1 row in set (0.000 sec)
+
+
+
+9. Display the date three months Before the current date 
+MariaDB [2CSE25_1690]> SELECT DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+    -> AS THREE_MONTHS_BEFORE;
++---------------------+
+| THREE_MONTHS_BEFORE |
++---------------------+
+| 2025-12-18          |
++---------------------+
+1 row in set (0.000 sec)
+
+
+
+10. Display those employees who joined in the company in the month of Dec. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE MONTH(HIREDATE) = 12;
++-------+
+| ENAME |
++-------+
+| SMITH |
+| SCOTT |
+| JAMES |
+| FORD  |
++-------+
+4 rows in set (0.000 sec)
+
+
+
+11. Display those employees whose first 2 characters from hire date -last 2 characters of salary. 
+MariaDB [(none)]> USE 2CSE25_1690;
+Database changed
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE LEFT(YEAR(HIREDATE),2) = RIGHT(SAL,2);
+Empty set (0.000 sec)
+
+
+
+12. Display those employees whose 10% of salary is equal to the year of joining. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE (SAL * 0.10) = YEAR(HIREDATE);
+Empty set (0.000 sec)
+
+
+
+13. Display those employees who joined the company before 15 of the months. 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE DAY(HIREDATE) < 15;
++--------+
+| ENAME  |
++--------+
+| JONES  |
+| BLAKE  |
+| CLARK  |
+| SCOTT  |
+| TURNER |
+| ADAMS  |
+| JAMES  |
+| FORD   |
++--------+
+8 rows in set (0.001 sec)
+
+
+
+14. Display those employees who has joined before 15th of the month 
+MariaDB [2CSE25_1690]> SELECT ENAME
+    -> FROM EMPLOYEE
+    -> WHERE MONTH(HIREDATE) = DEPTNO;
+Empty set (0.000 sec)
+
+
+
+15. Display those employees whose joining DATE is available in deptno 
+SELECT ENAME
+FROM EMPLOYEE
+WHERE YEAR(HIREDATE) = DEPTNO;
+
+
 
